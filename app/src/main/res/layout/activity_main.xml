@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/testing"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/fileNamePrefixEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:hint="file name prefix"
+            android:inputType="text"
+            tools:layout_editor_absoluteX="99dp"
+            tools:layout_editor_absoluteY="3dp" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="308dp"
+            android:layout_height="367dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/todo"
+            android:scaleType="center"
+            android:visibility="visible"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <Button
+            android:id="@+id/pictureTakingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="56dp"
+            android:onClick="launchCamera"
+            android:paddingTop="50dp"
+            android:paddingBottom="50dp"
+            android:text="@string/take_photo" />
+
+    </LinearLayout>
+
+</RelativeLayout>
