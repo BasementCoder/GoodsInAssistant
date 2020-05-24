@@ -26,11 +26,11 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="308dp"
-            android:layout_height="367dp"
+            android:layout_width="349dp"
+            android:layout_height="379dp"
             android:layout_gravity="center"
             android:contentDescription="@string/todo"
-            android:scaleType="center"
+            android:scaleType="fitCenter"
             android:visibility="visible"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
