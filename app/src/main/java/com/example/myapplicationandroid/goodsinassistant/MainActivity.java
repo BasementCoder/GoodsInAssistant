@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,41 +46,57 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final Button pictureTakingButton = (Button) findViewById(R.id.pictureTakingButton);
         final EditText fileNamePrefixButton = (EditText) findViewById(R.id.fileNamePrefixEditText);
-
-        Button pictureTakingButton = (Button) findViewById(R.id.pictureTakingButton);
-        pictureTakingButton.setOnClickListener(new View.OnClickListener()
-        {
+        fileNamePrefixButton.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
-                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                StrictMode.setVmPolicy(builder.build());
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String imageNameInput = fileNamePrefixButton.getText().toString();
+                pictureTakingButton.setEnabled(!imageNameInput.isEmpty());
 
-                if (Build.VERSION.SDK_INT >= 23) {
-                    String[] PERMISSIONS = {android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                    if (!hasPermissions(mContext, PERMISSIONS)) {
-                        ActivityCompat.requestPermissions((Activity) mContext, PERMISSIONS, REQUEST );
-                    } else {
-                        //do here
-                    }
-                } else {
-                    //do here
-                }
+                pictureTakingButton.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                File file = createImageFile(fileNamePrefixButton.getText().toString());
-                Uri outputFileUri = Uri.fromFile( file );
+                        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                        StrictMode.setVmPolicy(builder.build());
 
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            String[] PERMISSIONS = {android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                            if (!hasPermissions(mContext, PERMISSIONS)) {
+                                ActivityCompat.requestPermissions((Activity) mContext, PERMISSIONS, REQUEST );
+                            } else {
+                                //do here
+                            }
+                        } else {
+                            //do here
+                        }
 
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                        File file = createImageFile(fileNamePrefixButton.getText().toString());
+                        Uri outputFileUri = Uri.fromFile( file );
+
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 //        Take a picture and pass results along to onActivityResult
-                startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
+                        startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
 
+                    }
+                });
+                imageView = (ImageView)  findViewById(R.id.imageView);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
             }
         });
-        imageView = (ImageView)  findViewById(R.id.imageView);
+        
+
 
 
         //Disable the button if there is no camera on phone
@@ -117,10 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 //    Launching camera
-    public void launchCamera(View view){
-
-
-    }
+    public void launchCamera(View view){}
 
     private File createImageFile( final String filePrefix ){
         // Create an image file name
@@ -142,9 +157,10 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return image;
+            // Save a file: path for use with ACTION_VIEW intents
+            mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+            return image;
+
     }
 
 //    If you want to return image taken
